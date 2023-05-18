@@ -1,0 +1,29 @@
+name: CI 
+
+on: 
+  push: 
+      branches: [main]
+    
+jobs: 
+  CI: 
+    runs-on: azure-latest
+    
+    steps: 
+      - uses: actions/checkout@3.1.0
+    
+      - name: Docker Login
+        uses: docker/login-action@v2.1.0
+        with: 
+          username: ${{ secretes.USER }}
+          password: ${{ secretes.PASSWORD }}
+            
+      - name: Build and push docker images
+        uses: docker/build-push-action@3.2.0
+        with: 
+          context: . 
+          file: . 
+          push: true
+          tags: | 
+            fhs2020/take_home_project:v1
+            fhs2020/take_home_project:latest
+            
